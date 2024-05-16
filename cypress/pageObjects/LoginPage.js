@@ -1,43 +1,39 @@
 // cypress/pageObjects/LoginPage.js
-import { USERNAME, PASSWORD, WRONG_PASSWORD } from '../constants/const';
+import { NAME, MAIL, WRONG_PASSWORD } from '../constants/const';
 
 class LoginPage {
     visit() {
-        cy.visit('https://www.saucedemo.com/');
+        cy.visit('https://automationexercise.com/login');
     }
 
     fillUsername(name) {
-        cy.get('[data-test="username"]').type(name);
+        cy.get('[data-qa="signup-name"]').type(name);
     }
 
-    fillPassword(password) {
-        cy.get('[data-test="password"]').type(password);
+    fillEmail(email) {
+        cy.get('[data-qa="signup-email"]').type(email);
     }
 
     submit() {
-        cy.get('[data-test="login-button"]').click();
+        cy.get('[data-qa="signup-button"]').click();
     }
 
     loginSuccessful() {
         this.visit();
-        this.fillUsername(USERNAME);
-        this.fillPassword(PASSWORD);
+        this.fillUsername(NAME);
+        this.fillPassword(MAIL);
         this.submit();
     }
 
     loginUnsuccessful() {
         this.visit();
-        this.fillUsername(USERNAME);
+        this.fillUsername(NAME);
         this.fillPassword(WRONG_PASSWORD);
         this.submit();
     }
 
-    shouldShowInventoryPage() {
-        cy.url().should('include', '/inventory.html');
-    }
-
     shouldShowLoginError() {
-        cy.get('.error-message-container.error').should('be.visible').and('contain', 'Username and password do not match any user in this service');
+        cy.get('.login-form .alert-danger').should('be.visible');
     }
 }
 
